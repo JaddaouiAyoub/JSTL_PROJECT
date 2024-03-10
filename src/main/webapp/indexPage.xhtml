@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+<f:view>
+    <head>
+        <title>Employees</title>
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css"/>
+        <link rel="stylesheet" href="styles.css"/>
+        <style type="text/css">
+
+        </style>
+    </head>
+    <body>
+    <div class="fw-bold">Ayoub Jad</div>
+    <div class="container-fluid">
+<!--        <h1 class="text-center">Employees</h1>-->
+        <div class="text text-center">
+            <h:outputLabel styleClass="title" style="font-size: 35px" value="#{msg['employee']}"/>
+            <hr/>
+            <h:outputLabel value="#{msg[employeeBean.msgNotification]}" styleClass="success-label">
+                  #{employeeBean.clearDeletedSuccessfully()}
+            </h:outputLabel>
+        </div>
+
+        <h:form id="employeeForm">
+            <h:commandButton value="#{msg['add']}" styleClass="btn btn-info" action="#{employeeBean.toggleFormVisibility()}" />
+        </h:form>
+        <h:form>
+            <h:dataTable value="#{employeeBean.displayedEmployees}" var="employee" styleClass="table table-striped employee-table" border="1">
+                <h:column>
+                    <f:facet name="header">ID</f:facet>
+                    <h:outputText value="#{employee.id}" styleClass="text-dark"/>
+                </h:column>
+                <h:column>
+                    <f:facet name="header">#{msg['fullName']}</f:facet>
+                    <h:panelGroup>
+                        <h:inputText value="#{employeeBean.editedEmployee.fullName}" styleClass="form-control" rendered="#{employee.id == employeeBean.editEmployeeId}"/>
+                        <h:outputText value="#{employee.fullName}" styleClass="text-dark" rendered="#{employee.id != employeeBean.editEmployeeId}"/>
+                    </h:panelGroup>
+                </h:column>
+                <h:column>
+                    <f:facet name="header">Email</f:facet>
+                    <h:panelGroup>
+                        <h:inputText value="#{employeeBean.editedEmployee.email}" styleClass="form-control" rendered="#{employee.id == employeeBean.editEmployeeId}"/>
+                        <h:outputText value="#{employee.email}" styleClass="text-dark" rendered="#{employee.id != employeeBean.editEmployeeId}"/>
+                    </h:panelGroup>
+                </h:column>
+                <h:column>
+                    <f:facet name="header">#{msg['department']}</f:facet>
+                    <h:panelGroup>
+                        <h:inputText value="#{employeeBean.editedEmployee.department}" styleClass="form-control" rendered="#{employee.id == employeeBean.editEmployeeId}"/>
+                        <h:outputText value="#{employee.department}" styleClass="text-dark" rendered="#{employee.id != employeeBean.editEmployeeId}"/>
+                    </h:panelGroup>
+                </h:column>
+                <h:column>
+                    <f:facet name="header">#{msg['hireDate']}</f:facet>
+                    <h:panelGroup>
+                        <h:inputText value="#{employeeBean.editedEmployee.hireDate}" styleClass="form-control" rendered="#{employee.id == employeeBean.editEmployeeId}"/>
+                        <h:outputText value="#{employeeBean.formatDateString(employee.hireDate, facesContext.viewRoot.locale)}" styleClass="text-dark" rendered="#{employee.id != employeeBean.editEmployeeId}"/>
+                    </h:panelGroup>
+                </h:column>
+                <h:column>
+                <f:facet name="header">#{msg['tele']}</f:facet>
+                    <h:panelGroup>
+                        <h:inputText value="#{employeeBean.editedEmployee.phoneNumber}" styleClass="form-control" style="width: 89%" rendered="#{employee.id == employeeBean.editEmployeeId}"/>
+                        <h:outputText value="#{employee.phoneNumber}" styleClass="text-dark" rendered="#{employee.id != employeeBean.editEmployeeId}"/>
+                    </h:panelGroup>
+                </h:column>
+                <!-- Ajoutez d'autres colonnes si nécessaire -->
+                <h:column>
+                    <f:facet name="header">Actions</f:facet>
+                    <h:commandButton value="#{msg['edit']}" action="#{employeeBean.enableEdit(employee)}" styleClass="btn btn-primary" rendered="#{!employeeBean.isEmployeeInEditMode(employee)}"/>
+                    <h:commandButton value="#{msg['delete']}" styleClass="btn btn-danger" style="margin-left: 5px" action="#{employeeBean.deleteEmployee(employee)}" onclick="return confirm('Are you sure you want to delete this employee?');" rendered="#{!employeeBean.isEmployeeInEditMode(employee)}"/>
+                    <h:commandButton value="#{msg['save']}" action="#{employeeBean.saveChanges()}" styleClass="btn btn-success" rendered="#{employeeBean.isEmployeeInEditMode(employee)}"/>
+                </h:column>
+            </h:dataTable>
+        </h:form>
+
+        <h:form id="addEmployeeForm" style="display: #{employeeBean.formVisible ? 'inline' : 'none'};">
+            <table class="table table-striped employee-table2">
+                <tbody>
+
+                <tr>
+                    <td><h:outputLabel for="fullName" value="#{msg['fullName']}" /></td>
+                    <td colspan="3"><h:inputText id="fullName" validator="customValidator" value="#{employeeBean.newEmployee.fullName}"  styleClass="form-control background-cadetblue border-2" placeholder="Full Name" /></td>
+                    <td><h:outputLabel for="email" value="Email:" /></td>
+                    <td colspan="3"><h:inputText id="email" validator="customValidator"  value="#{employeeBean.newEmployee.email}" styleClass="form-control background-cadetblue border-2" placeholder="Email" /></td>
+                    <td><h:outputLabel for="department" value="#{msg['department']}" /></td>
+                    <td colspan="3"><h:inputText id="department" validator="customValidator" value="#{employeeBean.newEmployee.department}" styleClass="form-control background-cadetblue border-2" placeholder="Department" /></td>
+                    <td><h:outputLabel for="hireDate" value="#{msg['hireDate']}" /></td>
+                    <td colspan="3"><h:inputText id="hireDate" validator="customValidator" value="#{employeeBean.newEmployee.hireDate}" styleClass="form-control background-cadetblue border-2" placeholder="Joining Date" /></td>
+                    <td><h:outputLabel for="phoneNumber" styleClass="text-black-50" value="#{msg['tele']}" /></td>
+                    <td colspan="3"><h:inputText id="phoneNumber" validator="customValidator" value="#{employeeBean.newEmployee.phoneNumber}" styleClass="form-control background-cadetblue border-2" placeholder="Phone" /></td>
+                    <td><h:commandButton value="#{msg['add']}" action="#{employeeBean.addEmployee()}" styleClass="btn btn-primary" /></td>
+                </tr>
+                <tr class="alert alert-danger">
+                    <td colspan="4" class="text-center">
+                        <h:message for="fullName" styleClass="text-danger" />
+                    </td>
+                    <td colspan="4" class="text-center">
+                        <h:message for="email" styleClass="text-danger" />
+                    </td>
+                    <td colspan="4" class="text-center">
+                        <h:message for="department" styleClass="text-danger" />
+                    </td>
+                    <td colspan="4" class="text-center">
+                        <h:message for="hireDate" styleClass="text-danger" />
+                    </td>
+                    <td colspan="4" class="text-center">
+                        <h:message for="phoneNumber" styleClass="text-danger" />
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </h:form>
+
+        <!-- Boutons de pagination -->
+        <h:form>
+            <h:outputText value="Page #{employeeBean.currentPage + 1}" styleClass="text-primary pull-right" />
+            <div class="row" style="margin-bottom: 20px">
+                <div class="col-md-12">
+
+                    <h:commandButton value="#{msg['next']}" action="#{employeeBean.nextPage}" rendered="#{employeeBean.renderNextButton}" styleClass="btn btn-primary pull-right"/>
+                    <h:commandButton value="#{msg['previous']}" action="#{employeeBean.previousPage}" rendered="#{employeeBean.renderPreviousButton}" styleClass="btn btn-primary pull-right" style="margin-right: 2px"/>
+
+                </div>
+            </div>
+        </h:form>
+    </div>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js" type="text/javascript"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js" type="text/javascript"></script>
+    </body>
+</f:view>
+</html>

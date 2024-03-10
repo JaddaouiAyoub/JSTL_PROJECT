@@ -1,0 +1,77 @@
+/* Styles pour les lignes impaires */
+.employee-table tr:nth-child(odd) {
+    background-color: rgba(16, 239, 175, 0.53);
+}
+
+/* Styles pour les lignes paires */
+.employee-table tr:nth-child(even) {
+    background-color: #65d8fd;
+}
+
+/* Styles pour les colonnes */
+.employee-table td {
+    color: white;
+}
+
+.employee-table td:nth-child(1) {
+    background-color: #10f3ba;
+}
+
+.employee-table td:nth-child(2) {
+    background-color: green;
+}
+
+.employee-table td:nth-child(3) {
+    background-color: blue;
+}
+.employee-table td:nth-child(4) {
+    background-color: #ccabec;
+}
+.employee-table td:nth-child(5) {
+    background-color: #f19915;
+}
+.employee-table td:nth-child(6) {
+    background-color: #60328d;
+}
+
+
+/*.employee-table2 td:nth-child(1) {*/
+/*    background-color: green;*/
+/*}*/
+
+/*.employee-table2 td:nth-child(2) {*/
+/*    background-color: blue;*/
+/*}*/
+
+/*.employee-table2 td:nth-child(3) {*/
+/*    background-color: #ccabec;*/
+/*}*/
+/*.employee-table2 td:nth-child(4) {*/
+/*    background-color: #f19915;*/
+/*}*/
+/*.employee-table2 td:nth-child(5) {*/
+/*    background-color: #60328d;*/
+/*}*/
+
+/*body{*/
+/*    background-color: rgba(237, 245, 245, 0.9);*/
+/*}*/
+.success-label {
+    color: green;
+    font-weight: bold;
+}
+.employee-table {
+    margin-top: 15px;
+}
+/*!*.employee-actions {*!*/
+/*!*    margin-left: 5px;*!*/
+/*!*}*!*/
+/*!*.form-control[readonly] {*!*/
+/*!*    cursor: pointer;*!*/
+/*!*}*!*/
+/*.employee-table input[type="text"] {*/
+/*    border: 1px;*/
+/*    width: 100%;*/
+/*    background-color: rgba(178, 252, 230, 0.76);*/
+/*}*/
+/* Ajoutez d'autres styles pour les autres colonnes si nécessaire */
