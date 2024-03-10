@@ -14,23 +14,27 @@ import java.util.Locale;
 @ViewScoped
 public class EmployeeBean {
     private final EmployeeService employeeService;
-    private String msgSuccessDelete;
     private int editEmployeeId;
     private Employee newEmployee;
     private boolean formVisible;
     private boolean editMode = false;
     //private Employee editEmployee;
     private int currentPage = 0; // Numéro de la page actuelle
+    private int nbrPage;
     private Employee editedEmployee;
-
+    private List<Employee> employees;
+    private String msgNotification;
     public EmployeeBean() {
         employeeService = new EmployeeService();
         employees = employeeService.getAllEmployees();
+        int size = employees.size();
+        nbrPage = size / 7; // Calculer le nombre de pages
+
+        if (size % 7 != 0) { // Vérifier si le résultat n'est pas un nombre entier
+            nbrPage++; // Ajouter 1 si le résultat n'est pas un nombre entier
+        }
         newEmployee = new Employee();
     }
-
-    private List<Employee> employees;
-    private List<Employee> displayedEmployees; // Liste des employés affichés sur la page actuelle
 
     // Méthode pour obtenir les employés de la page actuelle
     public List<Employee> getDisplayedEmployees() {
@@ -53,9 +57,8 @@ public class EmployeeBean {
             currentPage++;
         }
     }
-
+//Methode pour effacer le message de notification
     public String clearDeletedSuccessfully() {
-        msgSuccessDelete = null;
         msgNotification = null;
         return "";
     }
@@ -168,7 +171,7 @@ public class EmployeeBean {
         this.editedEmployee = editedEmployee;
     }
 
-    private String msgNotification;
+
 
     public String getMsgNotification() {
         return msgNotification;
@@ -176,5 +179,13 @@ public class EmployeeBean {
 
     public void setMsgNotification(String msgNotification) {
         this.msgNotification = msgNotification;
+    }
+
+    public int getNbrPage() {
+        return nbrPage;
+    }
+
+    public void setNbrPage(int nbrPage) {
+        this.nbrPage = nbrPage;
     }
 }
